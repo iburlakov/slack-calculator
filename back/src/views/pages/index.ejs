@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%=title %></title>
+    <meta charset="utf-8" />
+</head>
+<body>
+     
+    <h1><%=title %></h1>
+    <% if(logedIn) {%>
+        <h3>Email</h3>
+        <%= email %>
+        <a href="/message">message</a>
+        <a href="/logout">logout</a>
+    <% }else {%>
+        <a href="/login">login</a>
+    <%} %>
+
+</body>
+<html>
