@@ -1,11 +1,12 @@
-{
+ {
   "name": "slack-calculator-back",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --ignore sessions/",
-    "test": "unit"
+    "test": "unit",
+    "start": "node index.js"
   },
   "author": "iburlakov",
   "license": "ISC",
