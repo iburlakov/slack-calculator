@@ -15,12 +15,6 @@ const app = express();
 
 const slacClient = require('./slackClient');
 
-
-//app.configure(function() {
- //   app.use(express.static('public'));
-
-
-
 // setup middlewares
  app.use(bodyParser.json());
  app.use(bodyParser.urlencoded({ extended: false }))
@@ -39,9 +33,6 @@ const slacClient = require('./slackClient');
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-//const user = {id: 1, username: "user", password: "pass", email: "user@domain.com"};
-
 
 passport.use(new LocalStrategy(
     // { usernameField: 'email' },
@@ -81,31 +72,15 @@ passport.deserializeUser((id, done) => {
   
 });
 
-
-
-// set up session
-
-// app.use(passport.initialize());
-// app.use(passport.session());
-
-// pages
-
 app.set('view engine', 'ejs');
 
 app.set('views', path.join(__dirname, '/views'))
 
 
 app.get('/', (req,res) =>{
-//console.log("hoime");
-//console.log(req.user);
-    //console.log('Inside the homepage callback function')
-    //console.log(req.sessionID)
-  //res.send(`You hit home page!\n`)
 
     const logedin = req.user ? true:false;
     const email = logedin ? req.user.email: "";
-    
-
 
     res.render('pages/index',
     {
@@ -114,9 +89,6 @@ app.get('/', (req,res) =>{
         email: email
     });
 });
-
-
-
 
 app.get('/login', (req, res) =>{
     console.log("Login GET");
@@ -131,15 +103,13 @@ app.post('/login', (req,res) => {
    
     req.login(user, err => {
         return res.redirect(`/?name=${user.username}`);
-    });
-                                    
+    });                            
 });
 
 app.get('/logout', (req, res) => {
     req.logout();
     res.redirect('/');
 });
-
 
 app.get('/message', loggedIn, (req, res) => {
     
@@ -157,11 +127,7 @@ app.get('/message', loggedIn, (req, res) => {
             return slacClient.getConversations(user.slack_token, user.slack_id)
         })
         .then(con => {
-
-            //console.log("channels : " + con.map(c => {return c.name}));
-
             view.convs = con;
-
             res.render('pages/message', view)
         })
         .catch(err => {
@@ -186,8 +152,6 @@ app.post('/message', loggedIn, (req, res) => {
             else {
                 throw new Error(status.error);
             }
-
-
         })
         .catch(err => {
             res.redirect('/message?error=' + err.message);
@@ -195,7 +159,7 @@ app.post('/message', loggedIn, (req, res) => {
 });
 
 
-  function loggedIn(req, res, next) {
+function loggedIn(req, res, next) {
     if (req.user) {
         next();
     } else {

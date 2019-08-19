@@ -13,14 +13,10 @@ class NumberController {
     }
 
     add(req, res) {
-
         // validate
 
         var number = req.body.number;
         console.log(req.body);
-
-
-
 
         POST(req, res, () => dbClient.Numbers.add(req.params.userId, number));
     }

@@ -51,7 +51,6 @@ function authUser(req, res) {
             }
         })
         .then (email => {
-            //res.status(200).send("User was authorized.");
             // TODO: add redirect
 
             req.login({id: email, username: email}, err => {
@@ -101,22 +100,3 @@ function validate(req) {
 
     return req.query.code;
 }
-
-
-// slack reply with token
-
-// {
-//     "access_token": "xoxp-XXXXXXXX-XXXXXXXX-XXXXX",
-//     "scope": "incoming-webhook,commands,bot",
-//     "team_name": "Team Installing Your Hook",
-//     "team_id": "XXXXXXXXXX",
-//     "incoming_webhook": {
-//         "url": "https://hooks.slack.com/TXXXXX/BXXXXX/XXXXXXXXXX",
-//         "channel": "#channel-it-will-post-to",
-//         "configuration_url": "https://teamname.slack.com/services/BXXXXX"
-//     },
-//     "bot":{
-//         "bot_user_id":"UTTTTTTTTTTR",
-//         "bot_access_token":"xoxb-XXXXXXXXXXXX-TTTTTTTTTTTTTT"
-//     }
-// }

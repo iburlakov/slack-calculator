@@ -1,7 +1,5 @@
 const fetch =   require('node-fetch');
 
-
-
 class slackClient {
 
     oauth(code, client_id, client_secret, redirect_uri) {
@@ -21,7 +19,6 @@ class slackClient {
             });
     }
 
-
     // todo: refactor to have a param to identify is the message is posted as from bot or from app
     postMessage ( text, channel, token) {
         fetch('https://slack.com/api/chat.postMessage',
@@ -31,14 +28,10 @@ class slackClient {
             headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
         })
         .then(resp => {
-            // console.log(resp.status);
-            //console.log(resp.statusText);
             console.log(`Posted message to channel ${channel}: ${resp.status}`);
             return resp.json();
         })
         .then(body => {
-            //console.log(`ERROR Posted message to channel ${JSON.stringify(body)}`);
-            
             if (!body.ok) {
                 throw new Error(body.error);
             }
@@ -59,7 +52,6 @@ class slackClient {
                     return conversations.channels.map(c => {return {id:c.id, name:c.name}});
                 });
     }
-
 }
 
 module.exports = new slackClient();
