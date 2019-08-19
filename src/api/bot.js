@@ -12,14 +12,13 @@ class BotController {
 
     }
 
-
     process(req, res) {
         const payload = req.body;
 
         console.log(payload);
 
         if (payload.type == 'url_verification') {
-            res.status(200).json(this.verify(payload)).end();
+            res.status(200).json(client.verify(payload)).end();
             return;
         } else {
 
