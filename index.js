@@ -1,13 +1,16 @@
 const app = require('./src/app');
+const fs = require('fs');
 
 require('dotenv').config();
-
-console.log(process.env.SLACK_CLIENT_ID);
-console.log(process.env.DB_HOST);
 
 module.exports = app;
 
 const port = process.env.PORT || 8081
 app.listen(port, () => {
     console.log(`Started at port ${port}`);
+
+    const sessionsFolder = './sessions';
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir);
+    }
 });

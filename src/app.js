@@ -35,10 +35,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.use(new LocalStrategy(
-    // { usernameField: 'email' },
     (username, password, done) => {
 
-        console.log(`Checking ${username} and ${password}`);
         if(user.username == username && user.password == password) {
             return done(null, user)
         }
@@ -49,27 +47,14 @@ passport.use(new LocalStrategy(
 
   // tell passport how to serialize the user
 passport.serializeUser((user, done) => {
-    console.log(`serializeUser: ${user}`);
-    console.log(user);
     done(null, user.id);
   });
 
 passport.deserializeUser((id, done) => {
     // get user by id, otherwise return false
-    console.log(`deserializeUser: ${id.email}`);
-
-    console.log(id);
     db.Users.byEmail(id.email)
-        .then(user => {
-            done(null, user);
-        })
-        .catch (err => {
-
-            done(err, false);
-        })
-
-
-  
+        .then(user =>  done(null, user))
+        .catch (err => done(err, false));
 });
 
 app.set('view engine', 'ejs');
@@ -113,7 +98,7 @@ app.get('/logout', (req, res) => {
 
 app.get('/message', loggedIn, (req, res) => {
     
-    let view ={title: "sed message to slack",  status: ""};
+    let view ={title: "send message to slack",  status: ""};
 
     db.Users.byEmail(req.user.email)
         .then(user=>{
@@ -171,7 +156,6 @@ function loggedIn(req, res, next) {
 require('./api/user')(app, '/api/user');
 require('./api/number')(app, '/api/number');
 require('./api/auth')(app, '/api/auth');
-require('./api/operation')(app, '/api/operation');
 require('./api/bot')(app, '/api/bot');
 
 module.exports = app;

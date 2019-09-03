@@ -1,9 +1,5 @@
 const { GET, POST } = require('../common/handlers');
-
-const fetch = require('node-fetch');
-
 const db = require('../data');
-
 const client = require('../slackClient');
 
 class BotController {
@@ -14,8 +10,6 @@ class BotController {
 
     process(req, res) {
         const payload = req.body;
-
-        console.log(payload);
 
         if (payload.type == 'url_verification') {
             res.status(200).json(client.verify(payload)).end();
@@ -30,7 +24,7 @@ class BotController {
         if (payload.event.type == 'app_mention') {
             db.Auth.get(payload.team_id)
                 .then(token =>  {
-                    client.postMessage(`Hello <${payload.event.user}>!`, payload.event.channel, token.bot_token);
+                    client.postMessage(`Hello <@${payload.event.user}>!`, payload.event.channel, token.bot_token);
                });
         }
         else if (payload.event.type === "message") {
@@ -46,12 +40,21 @@ class BotController {
                                     const val = parseInt(d.number)
                                     if (val) sum +=val;
                                 }
-                                client.postMessage(`SUM: ${sum}`, payload.event.channel, token.bot_token);
+                                client.postMessage(`SUM of previouse messages is ${sum}`, payload.event.channel, token.bot_token);
                             });
                     });
             }
+            else if (text.includes('clear')) {
+                db.Numbers.delete(payload.event.channel)
+                    .then(deleted => {
+                        client.postMessage(`${deleted} nums deleted`, payload.event.channel, token.bot_token);
+                    })
+                    .catch(err => {
+                        console.log(`Error deleting messages for channle ${payload.event.channel}: ${err.message}`);
+                    })
+            }
             else {
-               if (payload.event.bot_id != "BL3FFUTDJ") {
+               if (payload.event.user != "BL3FFUTDJ") {
                     let matches = text.match(/(\d+)/gi);
                     if (matches) { 
                         for(const match of matches) {
