@@ -11,6 +11,8 @@ class BotController {
     process(req, res) {
         const payload = req.body;
 
+        console.log(`got event ${payload}`);
+
         if (payload.type == 'url_verification') {
             res.status(200).json(client.verify(payload)).end();
             return;
