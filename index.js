@@ -10,7 +10,7 @@ app.listen(port, () => {
     console.log(`Started at port ${port}`);
 
     const sessionsFolder = './sessions';
-    if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir);
+    if (!fs.existsSync(sessionsFolder)) {
+        fs.mkdirSync(sessionsFolder);
     }
 });
