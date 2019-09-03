@@ -29,7 +29,7 @@ class BotController {
                     client.postMessage(`Hello <@${payload.event.user}>!`, payload.event.channel, token.bot_token);
                });
         }
-        else if (payload.event.type === "message") {
+        else if (payload.event.type === "message" && !!payload.event.bot_id) {
             const text = payload.event.text
 
             if (text.includes("sum")) {
@@ -56,15 +56,13 @@ class BotController {
                     })
             }
             else {
-               if (payload.event.user != "BL3FFUTDJ") {
-                    let matches = text.match(/(\d+)/gi);
-                    if (matches) { 
-                        for(const match of matches) {
-                            db.Numbers.add(payload.team_id, payload.event.channel, match);
-                            console.log(`ADDED: ${match}`);
-                        }
+                let matches = text.match(/(\d+)/gi);
+                if (matches) { 
+                    for(const match of matches) {
+                        db.Numbers.add(payload.team_id, payload.event.channel, match);
+                        console.log(`ADDED: ${match}`);
                     }
-                }   
+                } 
             }
         }
     }
