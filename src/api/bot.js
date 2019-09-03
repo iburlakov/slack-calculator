@@ -29,7 +29,7 @@ class BotController {
                     client.postMessage(`Hello <@${payload.event.user}>!`, payload.event.channel, token.bot_token);
                });
         }
-        else if (payload.event.type === "message" && !!payload.event.bot_id) {
+        else if (payload.event.type === "message" && !payload.event.bot_id) {
             const text = payload.event.text
 
             if (text.includes("sum")) {
